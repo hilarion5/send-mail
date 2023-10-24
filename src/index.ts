@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   host: core.getInput("smtp-server"),
   port: parseInt(core.getInput("smtp-port")),
-  secure: true,
+  secure: core.getInput("smtp-secure") === "true",
   auth: {
     user: core.getInput("smtp-username"),
     pass: core.getInput("smtp-password"),
@@ -35,9 +35,7 @@ async function run(): Promise<void> {
       from: sender,
       to: recipients,
       subject: subject,
-      text: body,
-      html: html ? body : undefined,
-      body: html ? undefined : body,
+      body: body,
     };
     transporter.sendMail(message, (error, info) => {
       if (error) {

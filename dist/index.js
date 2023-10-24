@@ -38642,7 +38642,7 @@ const nodemailer_1 = __importDefault(__nccwpck_require__(4289));
 const transporter = nodemailer_1.default.createTransport({
     host: core.getInput("smtp-server"),
     port: parseInt(core.getInput("smtp-port")),
-    secure: true,
+    secure: core.getInput("smtp-secure") === "true",
     auth: {
         user: core.getInput("smtp-username"),
         pass: core.getInput("smtp-password"),
@@ -38667,9 +38667,7 @@ function run() {
                 from: sender,
                 to: recipients,
                 subject: subject,
-                text: body,
-                html: html ? body : undefined,
-                body: html ? undefined : body,
+                body: body,
             };
             transporter.sendMail(message, (error, info) => {
                 if (error) {
