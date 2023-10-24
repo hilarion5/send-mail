@@ -24,10 +24,10 @@ async function run(): Promise<void> {
     )}`,
   );
   // log username
-  core.info(`Sending email as ${core.getInput("smtp-username")}`);
+  core.info(`Sending email as ${core.getInput("username")}`);
   try {
-    const sender = core.getInput("sender");
-    const recipients = core.getInput("recipients").split(",");
+    const sender = core.getInput("from-email");
+    const recipients = core.getInput("to-email").split(",");
     const subject = core.getInput("subject");
     const body = core.getInput("body");
     const html = core.getInput("html") === "true";
