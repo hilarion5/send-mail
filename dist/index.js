@@ -38640,22 +38640,25 @@ const core = __importStar(__nccwpck_require__(2186));
 const nodemailer_1 = __importDefault(__nccwpck_require__(4289));
 // setup nodemailer
 const transporter = nodemailer_1.default.createTransport({
-    host: core.getInput('smtp-server'),
-    port: parseInt(core.getInput('smtp-port')),
+    host: core.getInput("smtp-server"),
+    port: parseInt(core.getInput("smtp-port")),
     secure: true,
     auth: {
-        user: core.getInput('smtp-username'),
-        pass: core.getInput('smtp-password'),
-    }
+        user: core.getInput("smtp-username"),
+        pass: core.getInput("smtp-password"),
+    },
 });
+run()
+    .then((r) => core.info("Action completed successfully"))
+    .catch((e) => core.setFailed(e));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const sender = core.getInput('sender');
-            const recipients = core.getInput('recipients').split(',');
-            const subject = core.getInput('subject');
-            const body = core.getInput('body');
-            const html = core.getInput('html') === 'true';
+            const sender = core.getInput("sender");
+            const recipients = core.getInput("recipients").split(",");
+            const subject = core.getInput("subject");
+            const body = core.getInput("body");
+            const html = core.getInput("html") === "true";
             const message = {
                 from: sender,
                 to: recipients,
@@ -38670,13 +38673,13 @@ function run() {
                     return;
                 }
                 else {
-                    core.setOutput('message', `Email sent successfully: ${info.messageId}`);
+                    core.setOutput("message", `Email sent successfully: ${info.messageId}`);
                 }
             });
-            core.setOutput('message', 'Email sent successfully');
+            core.setOutput("message", "Email sent successfully");
         }
         catch (error) {
-            core.setFailed('Email failed to send, unexpected error occurred');
+            core.setFailed("Email failed to send, unexpected error occurred");
         }
     });
 }
