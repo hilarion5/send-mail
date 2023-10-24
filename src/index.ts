@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   port: parseInt(core.getInput("smtp-port")),
   secure: core.getInput("smtp-secure") === "true",
   auth: {
-    user: core.getInput("smtp-username"),
-    pass: core.getInput("smtp-password"),
+    user: core.getInput("username"),
+    pass: core.getInput("password"),
   },
 });
 
