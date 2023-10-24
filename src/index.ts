@@ -17,6 +17,14 @@ run()
   .catch((e) => core.setFailed(e));
 
 async function run(): Promise<void> {
+  // log server
+  core.info(
+    `Sending email via ${core.getInput("smtp-server")}:${core.getInput(
+      "smtp-port",
+    )}`,
+  );
+  // log username
+  core.info(`Sending email as ${core.getInput("smtp-username")}`);
   try {
     const sender = core.getInput("sender");
     const recipients = core.getInput("recipients").split(",");
