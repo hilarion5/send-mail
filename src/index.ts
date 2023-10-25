@@ -1,8 +1,9 @@
 import * as core from "@actions/core";
-import nodemailer from "nodemailer";
+import { createTransport, SentMessageInfo, Transporter } from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 
 // setup nodemailer
-const transporter = nodemailer.createTransport({
+const transporter: Transporter<SentMessageInfo> = createTransport({
   host: core.getInput("smtp-server"),
   port: parseInt(core.getInput("smtp-port")),
   secure: core.getInput("smtp-secure") === "true",
@@ -26,28 +27,30 @@ async function run(): Promise<void> {
   // log username
   core.info(`Sending email as ${core.getInput("username")}`);
   try {
-    const sender = core.getInput("from-email");
-    const recipients = core.getInput("to-email").split(",");
-    const subject = core.getInput("subject");
-    const body = core.getInput("body");
-    const html = core.getInput("html");
-    const message = {
+    const sender: string = core.getInput("from-email");
+    const recipients: string[] = core.getInput("to-email").split(",");
+    const subject: string = core.getInput("subject");
+    const body: string = core.getInput("body");
+    const html: string = core.getInput("html");
+    const message: Mail.Options = {
       from: sender,
       to: recipients,
       subject: subject,
       text: html ? undefined : body,
       html: html ? body : undefined,
     };
-    transporter.sendMail(message, (error, info) => {
-      if (error) {
-        core.setFailed(error.message);
-        return;
-      } else {
-        core.setOutput("message", `Email sent successfully: ${info.messageId}`);
-      }
-    });
-    core.setOutput("message", "Email sent successfully");
+    transporter.sendMail(
+      message,
+      (error: Error | null, info: SentMessageInfo): void => {
+        if (error) {
+          core.setFailed(error.message);
+          return;
+        }
+        core.info(`Email sent successfully: ${info.messageId}`);
+      },
+    );
   } catch (error) {
+    core.error(`Email failed to send: ${error}`);
     core.setFailed("Email failed to send, unexpected error occurred");
   }
 }

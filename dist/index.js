@@ -38632,14 +38632,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const nodemailer_1 = __importDefault(__nccwpck_require__(4289));
+const nodemailer_1 = __nccwpck_require__(4289);
 // setup nodemailer
-const transporter = nodemailer_1.default.createTransport({
+const transporter = (0, nodemailer_1.createTransport)({
     host: core.getInput("smtp-server"),
     port: parseInt(core.getInput("smtp-port")),
     secure: core.getInput("smtp-secure") === "true",
@@ -38675,13 +38672,11 @@ function run() {
                     core.setFailed(error.message);
                     return;
                 }
-                else {
-                    core.setOutput("message", `Email sent successfully: ${info.messageId}`);
-                }
+                core.info(`Email sent successfully: ${info.messageId}`);
             });
-            core.setOutput("message", "Email sent successfully");
         }
         catch (error) {
+            core.error(`Email failed to send: ${error}`);
             core.setFailed("Email failed to send, unexpected error occurred");
         }
     });

@@ -1,5 +1,5 @@
 name: 'Send EMail with AWS SES'
-description: 'Sending Email via Amazon Simple Email Service'
+description: 'Sending Email vit SMTP'
 branding:
   icon: 'info'
   color: 'orange'
@@ -33,7 +33,7 @@ inputs:
   body:
     description: 'The body of the mail'
   html:
-    description: 'If the mail is html'
+    description: 'HTML Content of the mail'
 
 runs:
   using: 'node20'
