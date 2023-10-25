@@ -14,49 +14,42 @@ const transporter: Transporter<SentMessageInfo> = createTransport({
 });
 
 run()
-  .then((r) => core.info("Action completed successfully"))
+  .then(() => core.info("Action completed successfully"))
   .catch((e) => core.setFailed(e));
 
 async function run(): Promise<void> {
-  // log server
+  // log server info
   core.info(
     `Sending email via ${core.getInput("smtp-server")}:${core.getInput(
       "smtp-port",
     )}`,
   );
-  // log username
-  core.info(`Sending email as ${core.getInput("username")}`);
-  try {
-    const sender: string = core.getInput("from-email");
-    const recipients: string[] = core.getInput("to-email").split(",");
-    const subject: string = core.getInput("subject");
-    const body: string = core.getInput("body");
-    const html: string = core.getInput("html");
-    const message: Mail.Options = {
-      from: sender,
-      to: recipients,
-      subject: subject,
-    };
-    if (body !== "") {
-      message.text = body;
-    } else if (html !== "") {
-      message.html = html;
-    } else {
-      core.setFailed("No body or html specified");
-      return;
-    }
-    transporter.sendMail(
-      message,
-      (error: Error | null, info: SentMessageInfo): void => {
-        if (error) {
-          core.setFailed(error.message);
-          return;
-        }
-        core.info(`Email sent successfully: ${info.messageId}`);
-      },
-    );
-  } catch (error) {
-    core.error(`Email failed to send: ${error}`);
-    core.setFailed("Email failed to send, unexpected error occurred");
+  core.info(`Sending email as ${core.getInput("from-email")}`);
+
+  const sender: string = core.getInput("from-email");
+  const recipients: string[] = core.getInput("to-email").split(",");
+  const subject: string = core.getInput("subject");
+  const body: string = core.getInput("body");
+  const html: string = core.getInput("html");
+  const message: Mail.Options = {
+    from: sender,
+    to: recipients,
+    subject: subject,
+  };
+  if (body !== "") {
+    message.text = body;
+  } else if (html !== "") {
+    message.html = html;
+  } else {
+    throw new Error("No body or html provided");
   }
+  transporter.sendMail(
+    message,
+    (error: Error | null, info: SentMessageInfo): void => {
+      if (error) {
+        throw error;
+      }
+      core.info(`Email sent successfully: ${info.messageId}`);
+    },
+  );
 }

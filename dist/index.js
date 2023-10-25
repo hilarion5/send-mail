@@ -38646,47 +38646,38 @@ const transporter = (0, nodemailer_1.createTransport)({
     },
 });
 run()
-    .then((r) => core.info("Action completed successfully"))
+    .then(() => core.info("Action completed successfully"))
     .catch((e) => core.setFailed(e));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        // log server
+        // log server info
         core.info(`Sending email via ${core.getInput("smtp-server")}:${core.getInput("smtp-port")}`);
-        // log username
-        core.info(`Sending email as ${core.getInput("username")}`);
-        try {
-            const sender = core.getInput("from-email");
-            const recipients = core.getInput("to-email").split(",");
-            const subject = core.getInput("subject");
-            const body = core.getInput("body");
-            const html = core.getInput("html");
-            const message = {
-                from: sender,
-                to: recipients,
-                subject: subject,
-            };
-            if (body !== "") {
-                message.text = body;
-            }
-            else if (html !== "") {
-                message.html = html;
-            }
-            else {
-                core.setFailed("No body or html specified");
-                return;
-            }
-            transporter.sendMail(message, (error, info) => {
-                if (error) {
-                    core.setFailed(error.message);
-                    return;
-                }
-                core.info(`Email sent successfully: ${info.messageId}`);
-            });
+        core.info(`Sending email as ${core.getInput("from-email")}`);
+        const sender = core.getInput("from-email");
+        const recipients = core.getInput("to-email").split(",");
+        const subject = core.getInput("subject");
+        const body = core.getInput("body");
+        const html = core.getInput("html");
+        const message = {
+            from: sender,
+            to: recipients,
+            subject: subject,
+        };
+        if (body !== "") {
+            message.text = body;
         }
-        catch (error) {
-            core.error(`Email failed to send: ${error}`);
-            core.setFailed("Email failed to send, unexpected error occurred");
+        else if (html !== "") {
+            message.html = html;
         }
+        else {
+            throw new Error("No body or html provided");
+        }
+        transporter.sendMail(message, (error, info) => {
+            if (error) {
+                throw error;
+            }
+            core.info(`Email sent successfully: ${info.messageId}`);
+        });
     });
 }
 
