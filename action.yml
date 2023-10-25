@@ -1,4 +1,4 @@
-name: 'Send EMail via SMTP'
+name: 'Send E-Mail (SMTP)'
 description: 'Sending Email via SMTP'
 branding:
   icon: 'mail'
