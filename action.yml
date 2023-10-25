@@ -1,5 +1,5 @@
-name: 'Send EMail with AWS SES'
-description: 'Sending Email vit SMTP'
+name: 'Send EMail via SMTP'
+description: 'Sending Email via SMTP'
 branding:
   icon: 'info'
   color: 'orange'

@@ -1,5 +1,5 @@
 {
-  "name": "send-aws-mail",
+  "name": "send-mail",
   "version": "1.0.0",
   "description": "Action to send Mails via AWS SES",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/hilarion5/send-aws-mail.git"
+    "url": "git+ssh://git@github.com/hilarion5/send-mail.git"
   },
   "author": "Andreas Rainer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hilarion5/send-aws-mail/issues"
+    "url": "https://github.com/hilarion5/send-mail/issues"
   },
-  "homepage": "https://github.com/hilarion5/send-aws-mail#readme",
+  "homepage": "https://github.com/hilarion5/send-mail#readme",
   "keywords": [
     "actions",
     "node",
