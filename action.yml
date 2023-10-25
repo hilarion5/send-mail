@@ -32,10 +32,8 @@ inputs:
     required: true
   body:
     description: 'The body of the mail'
-    required: true
   html:
     description: 'If the mail is html'
-    default: 'false'
 
 runs:
   using: 'node20'
