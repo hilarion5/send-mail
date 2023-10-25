@@ -38664,9 +38664,17 @@ function run() {
                 from: sender,
                 to: recipients,
                 subject: subject,
-                text: html ? undefined : body,
-                html: html ? body : undefined,
             };
+            if (body !== "") {
+                message.text = body;
+            }
+            else if (html !== "") {
+                message.html = html;
+            }
+            else {
+                core.setFailed("No body or html specified");
+                return;
+            }
             transporter.sendMail(message, (error, info) => {
                 if (error) {
                     core.setFailed(error.message);
