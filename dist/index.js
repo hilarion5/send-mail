@@ -38662,12 +38662,13 @@ function run() {
             const recipients = core.getInput("to-email").split(",");
             const subject = core.getInput("subject");
             const body = core.getInput("body");
-            const html = core.getInput("html") === "true";
+            const html = core.getInput("html");
             const message = {
                 from: sender,
                 to: recipients,
                 subject: subject,
-                body: body,
+                text: html ? undefined : body,
+                html: html ? body : undefined,
             };
             transporter.sendMail(message, (error, info) => {
                 if (error) {
